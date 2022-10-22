@@ -21,9 +21,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     AntHalService-Soong
 
-# Alert slider
+# OPlusExtras
 PRODUCT_PACKAGES += \
-    KeyHandler \
+    OPlusExtras \
     tri-state-key-calibrate
 
 # Audio
@@ -178,6 +178,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     init.class_main.sh \
     init.oplus.rc \
+    init.oplus_extras.rc \
     init.oplus.sh \
     init.qcom.early_boot.sh \
     init.qcom.rc \
@@ -237,7 +238,8 @@ PRODUCT_PACKAGES += \
     FrameworksResTarget \
     OPlusFrameworksResCommon \
     OPlusSettingsResCommon \
-    OPlusSystemUIResCommon
+    OPlusSystemUIResCommon \
+    OPlusExtrasResCommon
 
 # Partitions
 PRODUCT_PACKAGES += \
