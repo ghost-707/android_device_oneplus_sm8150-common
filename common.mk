@@ -22,7 +22,7 @@ PRODUCT_COPY_FILES += \
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
-    $(LOCAL_PATH)/overlay-derp
+    $(LOCAL_PATH)/overlay-spark
 
 PRODUCT_ENFORCE_RRO_TARGETS := *
 
@@ -149,8 +149,8 @@ PRODUCT_PACKAGES += \
     vendor.qti.hardware.btconfigstore@1.0.vendor:64 \
     vendor.qti.hardware.btconfigstore@2.0.vendor:64
 
-# Blur
-TARGET_USES_BLUR := true
+# # Blur
+# TARGET_USES_BLUR := true
 
 # Camera
 PRODUCT_PACKAGES += \
@@ -186,7 +186,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/component-overrides.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sysconfig/component-overrides.xml \
     $(LOCAL_PATH)/configs/component-overrides_qti.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/sysconfig/component-overrides.xml
 
-# DerpFest Device Settings
+# Spark Device Settings
 PRODUCT_PACKAGES += \
     DeviceSettings
 
