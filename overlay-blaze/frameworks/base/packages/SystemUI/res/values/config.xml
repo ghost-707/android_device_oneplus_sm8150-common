@@ -39,4 +39,11 @@
 
     <!-- Preferred max refresh rate at AOD & Ambient Display, if supported by the display. -->
     <integer name="config_aodMaxRefreshRate">60</integer>
+
+     <!-- Battery health -->
+    <bool name="config_supportBatteryHealth">true</bool>
+    <string name="config_batteryCalculatedCapacity">/sys/class/power_supply/bms/charge_full</string>
+    <string name="config_batteryDesignCapacity">/sys/class/power_supply/bms/charge_full_design</string>
+    <string name="config_batteryChargeCycles">/sys/class/power_supply/bms/cycle_count</string>
+
 </resources>
