@@ -87,3 +87,9 @@
 /sys/devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-05/c440000.qcom,spmi:qcom,pm8150l@5:qcom,leds@d300/leds/led:switch_[0-9]/brightness u:object_r:sysfs_oem:s0
 /sys/devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm8350c@2:qcom,flash_led@ee00/leds/led:torch_[0-9]/brightness u:object_r:sysfs_oem:s0
 /sys/devices/platform/soc/c440000.qcom,spmi/spmi-0/spmi0-02/c440000.qcom,spmi:qcom,pm8350c@2:qcom,flash_led@ee00/leds/led:switch_[0-9]/brightness u:object_r:sysfs_oem:s0
+
+/sys/class/thermal/thermal_zone0/temp                           u:object_r:sysfs_device_info:s0
+/sys/class/power_supply/battery/temp                            u:object_r:sysfs_device_info:s0
+/sys/kernel/gpu/gpu_clock                                       u:object_r:sysfs_device_info:s0
+/sys/kernel/gpu/gpu_busy                                        u:object_r:sysfs_device_info:s0
+

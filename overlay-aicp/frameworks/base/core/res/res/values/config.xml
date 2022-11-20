@@ -44,9 +44,6 @@
      1: Right side -->
     <integer name="config_alertSliderLocation">1</integer>
 
-    <!-- Whether key handler sends intent when changing slider position -->
-    <string name="config_alertSliderIntent">com.derp.device.DeviceSettings.UPDATE_SLIDER_POSITION</string>
-
     <!-- Defines the custom pickup sensor used by various OEMs like OnePlus-->
     <string name="config_dozePickupSensorType">com.oneplus.sensor.pickup</string>
 
@@ -58,5 +55,27 @@
 
     <!-- Whether devices suports in-display fingerprint when screen is off -->
     <bool name="config_supportsScreenOffUdfps">true</bool>
+
+<bool name="config_liveDisplayAvailable">true</bool>
+
+<bool name="config_displayBlanksAfterDoze">true</bool>
+
+<bool name="config_enableSmartPixels">true</bool>
+
+<string name="config_defaultWellbeingPackage">com.google.android.apps.wellbeing</string>
+
+<string name="config_sysCPUTemp">/sys/class/thermal/thermal_zone0/temp</string>
+<string name="config_sysBatteryTemp">/sys/class/power_supply/battery/temp</string>
+<string name="config_sysGPUFreq">/sys/kernel/gpu/gpu_clock</string>
+<string name="config_sysGPULoad">/sys/kernel/gpu/gpu_busy</string>
+
+<integer name="config_sysCPUTempMultiplier">1</integer>
+<integer name="config_sysBatteryTempMultiplier">1</integer>
+
+<bool name="config_dozePulseTilt">true</bool>
+<bool name="config_dozePulseProximity">true</bool>
+
+<!-- Whether to show settings for hiding notch fill -->
+<bool name="config_showHideNotchSettings">true</bool>
 
 </resources>
