@@ -22,7 +22,7 @@ PRODUCT_COPY_FILES += \
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
-    $(LOCAL_PATH)/overlay-derp
+    $(LOCAL_PATH)/overlay-cherish
 
 PRODUCT_ENFORCE_RRO_TARGETS := *
 
@@ -420,7 +420,7 @@ PRODUCT_PACKAGES += \
 
 # tri-state key
 PRODUCT_PACKAGES += \
-    tri-state-key_daemon.vendor
+    tri-state-key_daemon
 
 # Update engine
 PRODUCT_PACKAGES += \

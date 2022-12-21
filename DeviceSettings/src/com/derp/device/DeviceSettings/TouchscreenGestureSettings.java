@@ -41,7 +41,7 @@ import com.android.internal.lineage.hardware.TouchscreenGesture; // Need FWB sup
 import java.lang.System;
 
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity;
-import com.android.settingslib.collapsingtoolbar.R;
+import com.android.settingslib.widget.R;
 
 public class TouchscreenGestureSettings extends CollapsingToolbarBaseActivity
         implements PreferenceFragment.OnPreferenceStartFragmentCallback {
