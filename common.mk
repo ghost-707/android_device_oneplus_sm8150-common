@@ -160,6 +160,9 @@ PRODUCT_PACKAGES += \
     libxml2 \
     vendor.oneplus.hardware.camera@1.0.vendor:64 \
     vendor.qti.hardware.camera.device@1.0.vendor:64
+    
+PRODUCT_PACKAGES += \
+    Aperture    
 
 # Common init scripts
 PRODUCT_PACKAGES += \
@@ -186,7 +189,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/component-overrides.xml:$(TARGET_COPY_OUT_VENDOR)/etc/sysconfig/component-overrides.xml \
     $(LOCAL_PATH)/configs/component-overrides_qti.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/sysconfig/component-overrides.xml
 
-# Spark Device Settings
+# DerpFest Device Settings
 PRODUCT_PACKAGES += \
     DeviceSettings
 
@@ -383,9 +386,13 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/seccomp/mediacodec.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy
 
 # Sensors
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/configs/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf
+
 PRODUCT_PACKAGES += \
     als_correction_service.oneplus_msmnile \
     android.hardware.sensors@2.1-service.oneplus_msmnile \
+    sensors.oneplus \
     libsensorndkbridge
 
 # Soong namespaces
