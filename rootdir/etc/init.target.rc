@@ -33,13 +33,6 @@ on early-init
     symlink /data/tombstones /tombstones
 
 on init
-    write /dev/stune/foreground/schedtune.sched_boost_no_override 1
-    write /dev/stune/top-app/schedtune.sched_boost_no_override 1
-    write /dev/stune/schedtune.colocate 0
-    write /dev/stune/background/schedtune.colocate 0
-    write /dev/stune/system-background/schedtune.colocate 0
-    write /dev/stune/foreground/schedtune.colocate 0
-    write /dev/stune/top-app/schedtune.colocate 1
     write /sys/module/qpnp_rtc/parameters/poweron_alarm 1
     wait /dev/block/platform/soc/1d84000.ufshc
     symlink /dev/block/platform/soc/1d84000.ufshc /dev/block/bootdevice
@@ -97,6 +90,12 @@ on post-fs-data
 on boot
     start vendor.sensors
 
+    # Allow system to manipulate KProfiles modes and parameters
+    chown system system /sys/module/kprofiles/parameters/auto_kprofiles
+    chmod 0660 /sys/module/kprofiles/parameters/auto_kprofiles
+    chown system system /sys/module/kprofiles/parameters/kp_mode
+    chmod 0660 /sys/module/kprofiles/parameters/kp_mode
+
 # For cpusets initialize for Silver Only first and then Silver + Gold
 # Silver Only configuration cannot work with 0-7
 on boot
@@ -124,6 +123,12 @@ on boot
     chown cameraserver cameraserver /dev/cpuset/camera-daemon
     chown cameraserver cameraserver /dev/cpuset/camera-daemon/tasks
     chmod 0660 /dev/cpuset/camera-daemon/tasks
+
+# Setup runtime blkio
+    write /dev/blkio/blkio.weight 1000
+    write /dev/blkio/background/blkio.weight 200
+    write /dev/blkio/blkio.group_idle 2000
+    write /dev/blkio/background/blkio.group_idle 0
 
 #USB controller configuration
     setprop vendor.usb.rndis.func.name "gsi"
@@ -171,7 +176,6 @@ on boot
     restorecon /sys/kernel/debug/regmap/0-0035/registers
     restorecon /sys/kernel/debug/regmap/0-0042/registers
     restorecon /sys/kernel/debug/regmap/tavil-slim-pgd/registers
-
 on property:vendor.display.lcd_density=560
    setprop dalvik.vm.heapgrowthlimit 256m
 
@@ -187,6 +191,36 @@ on property:persist.vendor.touch_sensitivity_mode=0 && property:sys.boot_complet
 
 on property:persist.vendor.touch_sensitivity_mode=1 && property:sys.boot_completed=1
     write /proc/touchpanel/game_switch_enable 1
+
+on property:sys.boot_completed=1
+
+    # Uclamp tunings
+
+    setprop kernel.sched_util_clamp_min_rt_default 500
+
+    #top-app
+    write /dev/cpuset/top-app/uclamp.max max
+    write /dev/cpuset/top-app/uclamp.min 10
+    write /dev/cpuset/top-app/uclamp.boosted 1
+    write /dev/cpuset/top-app/uclamp.latency_sensitive 1
+
+    #foreground
+    write /dev/cpuset/foreground/uclamp.max 50
+    write /dev/cpuset/foreground/uclamp.min 0
+    write /dev/cpuset/foreground/uclamp.boosted 0
+    write /dev/cpuset/foreground/uclamp.latency_sensitive 0
+
+    #background
+    write /dev/cpuset/background/uclamp.max max
+    write /dev/cpuset/background/uclamp.min 20
+    write /dev/cpuset/background/uclamp.boosted 0
+    write /dev/cpuset/background/uclamp.latency_sensitive 0
+
+    #system-background
+    write /dev/cpuset/system-background/uclamp.max 40
+    write /dev/cpuset/system-background/uclamp.min 0
+    write /dev/cpuset/system-background/uclamp.boosted 0
+    write /dev/cpuset/system-background/uclamp.latency_sensitive 0
 
 # Route touch_sensitivity_mode to persist
 on property:debug.touch_sensitivity_mode=0

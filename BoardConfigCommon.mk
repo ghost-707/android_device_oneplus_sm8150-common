@@ -48,16 +48,14 @@ BOARD_RAMDISK_USE_LZ4 := true
 TARGET_KERNEL_SOURCE := kernel/oneplus/sm8150
 TARGET_KERNEL_CONFIG := neptune_defconfig
 TARGET_KERNEL_ADDITIONAL_FLAGS := DTC_EXT=$(shell pwd)/prebuilts/misc/$(HOST_OS)-x86/dtc/dtc
-TARGET_KERNEL_CLANG_VERSION := dora
+TARGET_KERNEL_CLANG_VERSION := nexus
 KERNEL_SUPPORTS_LLVM_TOOLS := true
-TARGET_KERNEL_CLANG_PATH := $(shell pwd)/prebuilts/clang/host/linux-x86/clang-dora
+TARGET_KERNEL_CLANG_PATH := $(shell pwd)/prebuilts/clang/host/linux-x86/clang-nexus
 TARGET_KERNEL_ADDITIONAL_FLAGS += LLVM=1 AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip LD=ld.lld
-
 
 # Platform
 BOARD_USES_QCOM_HARDWARE := true
 TARGET_BOARD_PLATFORM := msmnile
-QCOM_BOARD_PLATFORMS += msmnile
 
 # Properties
 TARGET_ODM_PROP += $(VENDOR_PATH)/odm.prop
@@ -65,9 +63,6 @@ TARGET_PRODUCT_PROP += $(VENDOR_PATH)/product.prop
 TARGET_SYSTEM_PROP += $(VENDOR_PATH)/system.prop
 TARGET_SYSTEM_EXT_PROP += $(VENDOR_PATH)/system_ext.prop
 TARGET_VENDOR_PROP += $(VENDOR_PATH)/vendor.prop
-
-# Treble
-PRODUCT_FULL_TREBLE_OVERRIDE := true
 
 # A/B
 AB_OTA_UPDATER := true
@@ -91,8 +86,9 @@ BOARD_SUPPORTS_SOUND_TRIGGER := true
 USE_CUSTOM_AUDIO_POLICY := 1
 
 # Camera
-TARGET_CAMERA_NEEDS_CLIENT_INFO := true
+TARGET_USES_QTI_CAMERA_DEVICE := true
 USE_DEVICE_SPECIFIC_CAMERA := true
+TARGET_CAMERA_NEEDS_CLIENT_INFO_LIB := true
 
 # FOD
 TARGET_SURFACEFLINGER_UDFPS_LIB := //hardware/oneplus:libudfps_extension.oneplus
@@ -123,14 +119,12 @@ ODM_MANIFEST_FILES += $(VENDOR_PATH)/manifest-qva.xml
 TARGET_INIT_VENDOR_LIB := //$(VENDOR_PATH):libinit_oneplus-sm8150
 TARGET_RECOVERY_DEVICE_MODULES := libinit_oneplus-sm8150
 
-# HWUI
-HWUI_COMPILE_FOR_PERF := true
-
 # Metadata
 BOARD_USES_METADATA_PARTITION := true
 
 # Partitions
-BOARD_EROFS_PCLUSTER_SIZE := 65536
+BOARD_EROFS_COMPRESSOR := lz4
+BOARD_EROFS_PCLUSTER_SIZE := 262144
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := erofs
 BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := erofs
@@ -153,10 +147,10 @@ VENDOR_SECURITY_PATCH := 2022-06-01
 
 # SELinux
 include device/qcom/sepolicy_vndr-legacy-um/SEPolicy.mk
-
-SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(VENDOR_PATH)/sepolicy/private
-SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(VENDOR_PATH)/sepolicy/public
-BOARD_SEPOLICY_DIRS += $(VENDOR_PATH)/sepolicy/vendor
+SELINUX_IGNORE_NEVERALLOWS := true
+BOARD_VENDOR_SEPOLICY_DIRS += $(VENDOR_PATH)/sepolicy/vendor
+PRODUCT_PRIVATE_SEPOLICY_DIRS += $(VENDOR_PATH)/sepolicy/private
+PRODUCT_PUBLIC_SEPOLICY_DIRS += $(VENDOR_PATH)/sepolicy/public
 
 # Sensors
 SOONG_CONFIG_NAMESPACES += ONEPLUS_MSMNILE_SENSORS
@@ -164,7 +158,15 @@ SOONG_CONFIG_ONEPLUS_MSMNILE_SENSORS := ALS_POS_X ALS_POS_Y
 
 # Verified Boot
 BOARD_AVB_ENABLE := true
+ifneq (user,$(TARGET_BUILD_VARIANT))
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+else ifneq (,$(wildcard .android-certs/releasekey.key))
+BOARD_AVB_ALGORITHM := SHA256_RSA2048
+BOARD_AVB_KEY_PATH := .android-certs/releasekey.key
+else
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+endif
+
 
 # WiFi
 BOARD_WLAN_DEVICE := qcwcn

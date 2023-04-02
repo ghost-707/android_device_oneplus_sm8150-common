@@ -77,15 +77,6 @@
         <fqname>@4.1::IKeymasterDevice/default</fqname>
     </hal>
     <hal format="hidl">
-        <name>android.hardware.media.c2</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IComponentStore</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
         <name>android.hardware.media.omx</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
@@ -139,24 +130,6 @@
         <version>2.1</version>
         <interface>
             <name>ISoundTriggerHw</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>android.hardware.tetheroffload.config</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IOffloadConfig</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>android.hardware.tetheroffload.control</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IOffloadControl</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -603,11 +576,11 @@
         </interface>
     </hal>
     <hal format="hidl">
-        <name>vendor.qti.power.pasrmanager</name>
+        <name>vendor.dolby.hardware.dms</name>
         <transport>hwbinder</transport>
-        <version>1.1</version>
+        <version>2.0</version>
         <interface>
-            <name>IPasrManager</name>
+            <name>IDms</name>
             <instance>default</instance>
         </interface>
     </hal>

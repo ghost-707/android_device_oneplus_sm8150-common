@@ -2,10 +2,12 @@
 type fpc_images_file, file_type, core_data_file_type, data_file_type;
 type wifi_nv_data_file, file_type, data_file_type;
 
+# KProfiles
+type sysfs_kprofiles, sysfs_type, fs_type;
+
 # persist
 type persist_camera_file, file_type;
 type persist_engineer_file, file_type;
-type persist_wlan_file, file_type;
 
 # proc
 type proc_sensor, fs_type, proc_type;
@@ -18,7 +20,6 @@ type op2_file, file_type;
 type opf_file, file_type;
 
 # sockets
-type als_correction_socket, file_type;
 type vl53l1_socket, file_type;
 
 # sysfs

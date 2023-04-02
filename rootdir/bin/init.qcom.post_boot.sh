@@ -859,25 +859,29 @@ function configure_zram_parameters() {
         mkswap /dev/block/zram0
         swapon /dev/block/zram0 -p 32758
     fi
-    echo 0 > /proc/sys/vm/page-cluster
-    echo 100 > /proc/sys/vm/swappiness
 }
 
-function configure_vbswap() {
-    echo 4294967296 > /sys/devices/virtual/block/vbswap0/disksize
-    # Set swappiness reflecting the device's RAM size
-    RamStr=$(cat /proc/meminfo | grep MemTotal)
-    RamMB=$((${RamStr:16:8} / 1024))
-    if [ $RamMB -le 6144 ]; then
-        echo 190 > /proc/sys/vm/rswappiness
-    elif [ $RamMB -le 8192 ]; then
-        echo 160 > /proc/sys/vm/rswappiness
+function configure_read_ahead_kb_values() {
+    MemTotalStr=`cat /proc/meminfo | grep MemTotal`
+    MemTotal=${MemTotalStr:16:8}
+
+    dmpts=$(ls /sys/block/*/queue/read_ahead_kb | grep -e dm -e mmc)
+
+    # Set 128 for <= 3GB &
+    # set 512 for >= 4GB targets.
+    if [ $MemTotal -le 3145728 ]; then
+        echo 128 > /sys/block/mmcblk0/bdi/read_ahead_kb
+        echo 128 > /sys/block/mmcblk0rpmb/bdi/read_ahead_kb
+        for dm in $dmpts; do
+            echo 128 > $dm
+        done
     else
-        echo 130 > /proc/sys/vm/rswappiness
+        echo 512 > /sys/block/mmcblk0/bdi/read_ahead_kb
+        echo 512 > /sys/block/mmcblk0rpmb/bdi/read_ahead_kb
+        for dm in $dmpts; do
+            echo 512 > $dm
+        done
     fi
-    echo 0 > /proc/sys/vm/page-cluster
-    mkswap /dev/block/vbswap0
-    swapon /dev/block/vbswap0
 }
 
 function disable_core_ctl() {
@@ -937,17 +941,15 @@ function configure_memory_parameters() {
     # Set allocstall_threshold to 0 for all targets.
     #
 
-ProductName=`getprop ro.board.platform`
+ProductName=`getprop ro.product.name`
 low_ram=`getprop ro.config.low_ram`
 
-if  [ "$ProductName" == "msmnile" ] || [ "$ProductName" == "kona" ] || [ "$ProductName" == "sdmshrike_au" ] || [ "$ProductName" == "OnePlus7" ] || [ "$ProductName" == "OnePlus7Pro" ] || [ "$ProductName" == "OnePlus7T" ] ||[ "$ProductName" == "OnePlus7TPro" ]; then
-
-      # Enable vbswap
-      configure_vbswap
-
+if [ "$ProductName" == "msmnile" ] || [ "$ProductName" == "kona" ] || [ "$ProductName" == "sdmshrike_au" ]; then
       # Enable ZRAM
       configure_zram_parameters
-
+      configure_read_ahead_kb_values
+      echo 0 > /proc/sys/vm/page-cluster
+      echo 100 > /proc/sys/vm/swappiness
 else
     arch_type=`uname -m`
 
@@ -1059,6 +1061,8 @@ else
     echo 1 > /proc/sys/vm/watermark_scale_factor
 
     configure_zram_parameters
+
+    configure_read_ahead_kb_values
 
     enable_swap
 fi
@@ -2539,8 +2543,6 @@ case "$target" in
             # cpuset settings
             echo 0-3 > /dev/cpuset/background/cpus
             echo 0-3 > /dev/cpuset/system-background/cpus
-            # choose idle CPU for top app tasks
-            echo 1 > /dev/stune/top-app/schedtune.prefer_idle
 
             # re-enable thermal & BCL core_control now
             echo 1 > /sys/module/msm_thermal/core_control/enabled
