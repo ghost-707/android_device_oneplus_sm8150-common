@@ -45,10 +45,10 @@ TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_NO_BOOTLOADER := true
 
 # Properties
-TARGET_ODM_PROP += $(COMMON_PATH)/odm.prop
-TARGET_PRODUCT_PROP += $(COMMON_PATH)/product.prop
-TARGET_SYSTEM_EXT_PROP += $(COMMON_PATH)/system_ext.prop
-TARGET_VENDOR_PROP += $(COMMON_PATH)/vendor.prop
+TARGET_ODM_PROP += $(COMMON_PATH)/props/odm.prop
+TARGET_PRODUCT_PROP += $(COMMON_PATH)/props/product.prop
+TARGET_SYSTEM_EXT_PROP += $(COMMON_PATH)/props/system_ext.prop
+TARGET_VENDOR_PROP += $(COMMON_PATH)/props/vendor.prop
 
 # Display
 TARGET_USES_FOD_ZPOS := true
