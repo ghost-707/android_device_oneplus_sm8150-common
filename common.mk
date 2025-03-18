@@ -319,6 +319,9 @@ PRODUCT_PACKAGES += \
 
 $(call soong_config_set,OPLUS_LINEAGE_TOUCH_HAL,INCLUDE_DIR,$(LOCAL_PATH)/touch/include)
 
+# UDFPS icons
+EXTRA_UDFPS_ICONS := true
+
 # Update engine
 PRODUCT_PACKAGES += \
     update_engine \
